@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.timeline-example {
+    margin: 1em;
+    max-width: 300px;
+
+    .time-block > .content {
+        display: flex;
+        flex-direction: column;
+
+        &> .content {
+            font-size: 10px;
+            flex: 1 1 auto;
+            overflow: auto;
+            
+            &::-webkit-scrollbar-button { 
+                display: none; 
+            }
+            &::-webkit-scrollbar { 
+                width: 5px;
+                background: rgba(255, 255, 255, .7);
+            }
+            &::-webkit-scrollbar-thumb {
+                background: #888;
+            }
+            &::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+        }
+    }
+}
+
+.time-start, .time-end {
+    font-size: 9px;
+}
+
+.time-start {
+    text-align: left;
+}
+.time-end {
+    text-align: right;
+}

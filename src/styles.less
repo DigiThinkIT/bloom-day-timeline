@@ -1,0 +1,135 @@
+@border-color: rgb(182, 182, 182);
+@slice-even-bg: rgb(241, 241, 241);
+@slice-odd-bg: rgb(253, 253, 253);
+@slice-hover-bg: rgb(235, 235, 235);
+@block-border-color: rgb(107, 134, 151);
+@block-bg: rgb(197, 224, 235);
+@label-width: 50px;
+
+.time-line {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-size: 9px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+  .time-block {
+    box-sizing: border-box;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    left: calc(@label-width + 5px);
+    padding: 0;
+    font-size: 12px;
+    border-radius: 2px;
+    border: 1px solid @block-border-color;
+    background-color: @block-bg;
+    transform-origin: 50% 50%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1;
+
+    &:hover {
+      z-index: 10;
+      /*transform: scale(1.1);*/
+    }
+
+    > .content {
+      flex: 1 1 auto;
+      padding: 2px;
+      overflow: hidden;
+    }
+
+    > .handler {
+      font-size: 8px;
+      text-align: center;
+      flex: 0 0 auto;
+      padding: 0;
+
+      &:first-of-type {
+        border-bottom: 1px solid @block-border-color;
+      }
+
+      &:last-of-type {
+        border-top: 1px solid @block-border-color;
+      }
+
+      &:hover {
+        background: darken(@block-bg, 5%);
+      }
+    }
+  }
+
+  > .time-slice {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+
+    text-align: right;
+    border: 1px solid @border-color;
+    border-bottom-color: lighten(@border-color, 20%);
+    border-top: none;
+    background: @slice-odd-bg;
+
+    &:nth-child(even) {
+      background: @slice-even-bg;
+    }
+
+    &:hover {
+      background: @slice-hover-bg;
+      &:nth-child(even) {
+        background: darken(@slice-hover-bg, 5%);
+      }
+    }
+
+    &.yesterday, &.tomorrow {
+      background: darken(@slice-odd-bg, 20%);
+      border-bottom-color: lighten(@border-color, 5%);
+
+      &:nth-child(even) {
+        background: darken(@slice-even-bg, 20%);
+      }
+    }
+
+    &.separator {
+      border-top: 1px solid darken(@border-color, 20%);
+      &.yesterday, &.tomorrow {
+        border-top: 1px solid darken(@border-color, 10%);
+      }
+    }
+
+    &:first-child {
+      border-top: 1px solid @border-color;
+    }
+
+    > .time-label {
+      box-sizing: border-box;
+      flex: 0 0 auto;
+      border-right: 1px solid @border-color;
+      padding: 2px;
+      width: @label-width;
+    }
+
+    > .time-content {
+      flex: 1 1 auto;
+      padding: 2px;
+    }
+
+    &.header {
+      border-bottom: none;
+
+      > .time-label, > .time-content {
+        text-align: center;
+        font-weight: bolder;
+      }
+    }
+
+  }
+}
