@@ -194,14 +194,10 @@ class ResizeHandle extends PureComponent {
    * @param {MouseEvent} e MouseEvent object
    */
   onMouseDown(e) {
-    const { canDrag = true } = this.props.item;
-
-    if ( canDrag) {
-      const rect = this.reference.current.getBoundingClientRect();
-      this.mouseDown = true;
-      this.originY = rect.top;
-      e.cancelBubble = true;
-    }
+    const rect = this.reference.current.getBoundingClientRect();
+    this.mouseDown = true;
+    this.originY = rect.top;
+    e.cancelBubble = true;
   }
 
   /**
@@ -360,7 +356,7 @@ class TimeBlock extends PureComponent {
 
   render() {
     const { color, height, y, dataId, itemContentRenderer, item, rightMargin=0, leftMargin=0 } = this.props;
-    const { canResize = true } = item;
+    const { canResize = true, canDrag = true } = item;
     const onTopHandleMove = (y, dy, height) => this.onLiveResize('start', y, dy, height);
     const onBottomHandleMove = (y, dy, height) => this.onLiveResize('end', y, dy, height);
     const onTopHandleApply = (y, dy, height) => this.onLiveResize('start', y, dy, height, true);
@@ -377,7 +373,7 @@ class TimeBlock extends PureComponent {
         marginLeft: leftMargin,
         backgroundColor: color
       }} 
-      className="time-block"
+      className={`time-block ${canDrag?"draggable":""}`}
       ref={this.reference}
     >
       { canResize && (
@@ -478,9 +474,15 @@ export class Timeline extends PureComponent {
         let bz = parseInt(window.getComputedStyle(b).zIndex) || 0;
         return bz - az;
       });
-      this.moveBlock = blocks[0];
-      this.moveBlockOriginRect = this.moveBlock.getBoundingClientRect();
-      this.mouseMoveOrigin = { x, y };
+
+      const item = this.props.items.find((itm) => itm.id.toString() === blocks[0].dataset.id.toString());
+      const { canDrag = true } = item;
+
+      if ( canDrag ) {
+        this.moveBlock = blocks[0];
+        this.moveBlockOriginRect = this.moveBlock.getBoundingClientRect();
+        this.mouseMoveOrigin = { x, y };
+      }
     }
 
     this.reference.current.style.zIndex=10;
