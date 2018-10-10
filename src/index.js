@@ -3,6 +3,7 @@ import React, {PureComponent} from 'react'
 import moment from 'moment';
 import 'element-closest';
 import PropTypes from 'prop-types';
+import momentPropTypes from 'react-moment-proptypes';
 
 export const ItemProp = PropTypes.shape({
   /**
@@ -15,11 +16,19 @@ export const ItemProp = PropTypes.shape({
   /**
    * The start measurement of the item. Measured with momentjs.
    */
-  start: PropTypes.instanceOf(moment),
+  start: momentPropTypes.momentObj,
   /**
    * The end measure of the item. Measured with momentjs.
    */
-  end: PropTypes.instanceOf(moment)
+  end: momentPropTypes.momentObj,
+  /**
+   * Set to false to dissable time block dragging
+   */
+  canDrag: PropTypes.boolean,
+  /**
+   * Set to false to dissable time block resizing
+   */
+  canResize: PropTypes.canResize
 });
 
 /**
@@ -185,10 +194,14 @@ class ResizeHandle extends PureComponent {
    * @param {MouseEvent} e MouseEvent object
    */
   onMouseDown(e) {
-    const rect = this.reference.current.getBoundingClientRect();
-    this.mouseDown = true;
-    this.originY = rect.top;
-    e.cancelBubble = true;
+    const { canDrag = true } = this.props.item;
+
+    if ( canDrag) {
+      const rect = this.reference.current.getBoundingClientRect();
+      this.mouseDown = true;
+      this.originY = rect.top;
+      e.cancelBubble = true;
+    }
   }
 
   /**
@@ -347,6 +360,7 @@ class TimeBlock extends PureComponent {
 
   render() {
     const { color, height, y, dataId, itemContentRenderer, item, rightMargin=0, leftMargin=0 } = this.props;
+    const { canResize = true } = item;
     const onTopHandleMove = (y, dy, height) => this.onLiveResize('start', y, dy, height);
     const onBottomHandleMove = (y, dy, height) => this.onLiveResize('end', y, dy, height);
     const onTopHandleApply = (y, dy, height) => this.onLiveResize('start', y, dy, height, true);
@@ -366,9 +380,13 @@ class TimeBlock extends PureComponent {
       className="time-block"
       ref={this.reference}
     >
-      <ResizeHandle className="top" onMove={onTopHandleMove} onApplyResize={onTopHandleApply} />
+      { canResize && (
+        <ResizeHandle className="top" onMove={onTopHandleMove} onApplyResize={onTopHandleApply} />
+      )}
       <div className="content">{itemContentRenderer(item)}</div>
-      <ResizeHandle className="bottom" onMove={onBottomHandleMove} onApplyResize={onBottomHandleApply}/>
+      { canResize && (
+        <ResizeHandle className="bottom" onMove={onBottomHandleMove} onApplyResize={onBottomHandleApply}/>
+      )}
     </div>
   }
 }
