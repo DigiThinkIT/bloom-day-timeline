@@ -1,5 +1,5 @@
 /*!
- * bloom-day-timeline v1.0.4
+ * bloom-day-timeline v1.0.5
  * MIT Licensed
  */
 (function webpackUniversalModuleDefinition(root, factory) {

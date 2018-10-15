@@ -1,6 +1,6 @@
 {
   "name": "bloom-day-timeline",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A day timeline react component to manage tasks or activities.",
   "main": "lib/index.js",
   "module": "es/index.js",
